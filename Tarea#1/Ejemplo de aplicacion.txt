@@ -1,0 +1,11 @@
+Un ejemplo donde se realiza un cálculo de las raíces de una ecuación es el cálculo de diámetros de tubería mediante la ecuación de Darcy-Weisbach.
+En una tuberías, para transportar un fluido de un punto a otro en una distancia dada, se pierde una altura determinada debido a factores como la fricción,
+tipo de material, viscosidad del fluido y depende de diversas condiciones esto genera que el cálculo se comporte de forma no lineal y al necesitar varias
+iteraciones para poder estimar el mejor diametro posible, el método de Newton-Raphson permite aproximar la solución de una ecuación del tipo f(x)=0 y por
+ende es un método acorde para calcular el diametro de la tubería.
+
+Otro ejemplo sería el poder modelar olas de mar, el modelado de una ola debido a que presenta tantos factores como la amplitud, el periodo, altura y longitud de onda
+genera que cuando una ola se aproxima a la costa, el movimiento típico del mar libre, movimiento circular, se transforma, por rozamiento con el fondo, 
+en un movimiento elíptico; la cresta de la ola avanza por este motivo más deprisa que su punto opuesto en la vertical y se produce un 
+desplazamiento horizontal de la masa de agua que provoca la ruptura de la ola al llegar a la costa. Las ecuaciones generadas a partir de esto son complejas y el uso
+del método de la secante o Newton Rapshon son utiles para encontrar las raíces de la función y asi poder modelar de forma correcta las olas.
