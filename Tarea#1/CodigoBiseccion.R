@@ -7,9 +7,9 @@ Func = function(x) {x*exp(x) - pi}
 fBiseccion <- function(x1,x2) {
   if(Func(x1)*Func(x2) < 0)
   {
-  seq = seq(x1,x2,0.5)
+  x = seq(x1,x2,0.5)
   
-  plot(seq,Func(seq),type="l",col="red")
+  plot(x,Func(x),type="l",col="red")
 
   ptoM = (x1+x2)/2
   
