@@ -1,0 +1,196 @@
+---
+title: "Tarea Miercoles 6 de Febrero del 2019"
+output: 
+  html_notebook: default
+  pdf_document: default
+---
+
+Se graficaron tres métodos númericos para encontrar raices: Bisección, Punto Fijo y Secante a partir de esto se analiza cual de los tres es la mejor opción en cuestión a sus iteraciones. 
+
+##Grafica
+```{r, echo=FALSE}
+Func = function(x) {exp(x) - x*pi}
+x = seq(0.2,1.8,0.1)
+  
+plot(x,Func(x),type="l",col="red")
+abline(h = 0)
+```
+
+
+##Metodo por Biseccion
+
+```{r, echo=TRUE}
+
+
+Func = function(x) {exp(x) - x*pi}
+
+
+
+fBiseccion <- function(x1,x2) {
+  if(Func(x1)*Func(x2) < 0)
+  {
+  x = seq(x1,x2,0.1)
+  
+  plot(x,Func(x),type="l",col="red")
+  
+  abline(h=0)
+
+  ptoM = (x1+x2)/2
+  
+  error = abs(x1-x2)/2
+  
+  i = 0
+  
+  aux = Func(ptoM)
+  
+  points(rbind(c(ptoM,aux)),pch=15,cex=0.4,col="blue")
+  
+  valor = log10((x2-x1)/1.e-8)/log10(2)
+  
+  cat("Iteracion=",i,"\tFunc(x)=",Func(ptoM),"\tX=",ptoM,"\tError=",error,"\n")
+  
+  while (error > 1.e-8) {
+    
+    i = i+1
+
+    if (Func(ptoM) == 0) break
+    
+    if (Func(ptoM)*Func(x1) < 0) x2 = ptoM else {x1 = ptoM}
+    
+    ptoM = (x1+x2)/2
+    
+    error = abs(x1-x2)/2
+    
+    aux = Func(ptoM)
+    
+    points(rbind(c(ptoM,aux)),pch=15,cex=0.4,col="blue")
+    
+    cat("Iteracion=",i,"\tFunc(x)=",Func(ptoM),"\tX=",ptoM,"\tError=",error,"\n")
+    
+  }
+    cat ("Valor aproximado de iteraciones:", valor)
+    
+  }
+  
+}
+
+
+
+fBiseccion(0.2,1)
+
+
+```
+
+## Método por Secante
+
+```{r}
+Func = function(x) {exp(x) - x*pi}
+
+
+
+fSecante <- function(x0,x1) {
+  
+    x = seq(x0,x1,0.1)
+    
+    plot(x,Func(x),type="l",col="red")
+    
+    abline(h=0)
+    
+    x2 = x1-(((x1-x0)*(Func(x1)))/(Func(x1)-Func(x0)))
+    
+    error = abs(x2-x1)/x2
+    
+    i = 0
+    
+    aux = Func(x2)
+    
+    points(rbind(c(x2,aux)),pch=15,cex=0.4,col="blue")
+    
+    cat("Iteracion=",i,"\tFunc(x)=",Func(x2),"\tX=",x2,"\tError=",error,"\n")
+    
+    while (error > 1.e-8) {
+      
+      x0 = x1
+      
+      x1 = x2
+      
+      x2 = x1-(((x1-x0)*(Func(x1)))/(Func(x1)-Func(x0)))
+      
+      i = i+1
+      
+      error = abs(x2-x1)/x2
+      
+      aux = Func(x2)
+      
+      points(rbind(c(x2,aux)),pch=15,cex=0.4,col="blue")
+      
+      cat("Iteracion=",i,"\tFunc(x)=",Func(x2),"\tX=",x2,"\tError=",error,"\n")
+      
+    }
+  
+}
+
+fSecante(0.2,1)
+```
+
+##Método del Punto Fijo
+
+```{r}
+library(Deriv)
+Func = function(x) {exp(x) - x*pi}
+FuncG = function(x) {exp(x)/pi}
+
+
+
+fPuntoFijo = function(a,b)
+{
+  x = seq(a,b,0.1)
+  FuncDerG = Deriv(FuncG)
+  print (FuncDerG(a))
+  i = 0
+  if(FuncDerG(a) < 1)
+  {
+    fijo = FuncG(a)
+    
+    plot(x,Func(x),type = 'l', col = c("blue"))
+    
+    abline(h = 0)
+    
+    aux = Func(fijo)
+    
+    points(rbind(c(fijo,aux)),pch=15,cex=0.4,col="red")
+    cat("Iteracion=",i,"\tFunc(x)=",Func(fijo),"\tX=",fijo,"\tError=---\n")
+    repeat
+    {
+      fijoN = FuncG(fijo)
+      
+      error = abs(fijoN-fijo)/fijoN
+      
+      if(error < 1.e-8)
+      { 
+        
+        break
+        
+      }
+      
+      i = i + 1
+      
+      fijo = fijoN
+      
+      aux = Func(fijo)
+      
+      points(rbind(c(fijo,aux)),pch=15,cex=0.4,col="red")
+      
+      cat("Iteracion=",i,"\tFunc(x)=",Func(fijo),"\tX=",fijo,"\tError=",error,"\n")
+    }
+    
+  }
+
+  
+}
+
+fPuntoFijo(0.2,1)
+```
+
+
+Comparando los resultados entregados por los tres métodos, el método por secante presenta el menor número de iteraciones, seguido por el método de bisección y finalmente el punto fijo. Las tres usaron el mismo intervalo para la función.
