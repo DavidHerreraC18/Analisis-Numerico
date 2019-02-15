@@ -99,5 +99,5 @@ fSecante <- function(x0,x1) {
   
 }
 
-fBiseccion(-1,3)
-fSecante(-1,3)
+fBiseccion(-1, 3)
+fSecante(-1, 3)

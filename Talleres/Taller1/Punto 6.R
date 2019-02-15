@@ -1,51 +1,53 @@
-#Número a conocer la raiz
-numero = 5
-
-
-
-#Valor inicial de n
-valorini= 4
-
-Func = function(x) ((x^valorini)-numero)
-Dx = function(x) (valorini*x^(valorini-1))
-Hx <- function(x) x - (Func(x)/Dx(x))
-
-newton <- function(a,b) {
-  seqx = seq(a,b,0.1)
-  plot(seqx,Func(seqx),type="l",col="red")
-  if((Func(a)-a)*(Func(b)-b)<0)
-  {
+     
+    Newton <- function(x,n,v) x-(x^n-v)/(n*x^(n-1))
+    FuncG <- function(x,n,v) x^n-v
+    Func <- function(x,n) n*x^(n-1)
+    Aitken <- function(x,x1,x2) x - (((x1-x2)^2)/(x2-2*x1+x))
     
-    x<-0.70
-    r<-Hx(x)
-    i<-0
+    calcularRaiz <- function(v,n)
+    {
+       
+       x <- v/2
+       error <- 1
+       i <- 0
+       while(error > 1.e-8)
+       {
+         x1<-(Newton(x,n,v))
+         x2<-(Newton(x1,n,v))
+         xr<-(Func(x,x1,x2))
+         
+         if(Newton(xr,n,v)!=0)
+         {
+           x<-x1
+         }
+         else
+         {
+           break
+         }
+         
+         error <- abs(FuncG(xr,n,v))/Func(xr,n)
+         cat("Iteracion =", i,"\t x = ",xr,"\t   Error= ",error,"\n")
+         i <- i + 1
+         
+       }
+       
     
-    while (Func(r) != 0 ) 
-    {    
-      error<-abs(r-x)
-      
-      if(error > 1.e-8)
-      {
-        x<-r
-        
-      }
-      else
-      {
-        break
-      }
-      
-      r<-Hx(x)  
-      i<-i+1
-      points(rbind(c(x,Func(x)),pch=15,cex=0.4,col="green"))
-      cat("I=",i,"\tF(x) =",Func(x),"\tX=",signif(x, digits = 8),"\tE=",error,"\n")
     }
     
-  }
-  else
-  {
-    cat("No tiene raíz la funcion en ese intervalo.\n")
-  }
- 
-}
-
-newton(-2,1)
+    calcularRaiz2 <-function(v,n)
+    {
+      x <-v/2
+      i <- 0
+      error <-1
+      while(error > 1.e-8)
+      {
+        x <-Newton(x,n,v)
+        error <-abs(FuncG(x,n,v))/Func(x,n)
+        i <- i + 1
+        cat("Iteraci�n",i,"x= ",x," \tError= ",error,"\n")
+      }
+    }
+    
+    
+    calcularRaiz(53,3)
+    calcularRaiz2(53,3)
