@@ -151,7 +151,7 @@ beta = 0
 alpha = 3
 Matriz = matrix(c(2, 0, 1,
                       beta,2 , -1,
-                      -1, 1, 1), nrow=3, byrow=TRUE)
+                      -1, 1, alpha), nrow=3, byrow=TRUE)
 b5 = c(1,2,3)
 
 jacobi2 <- function(M, b, x0, repeticiones)
@@ -224,4 +224,77 @@ holi = Q %*% R
 print (holi)
 
 
+#Punto 7
 
+interseccion <- function(x)
+{
+  n = length(x)
+  
+  F = rep(NA, n)
+  
+  F[1] = x[1] - x[2]
+  F[2] = x[1]^2 + x[2]^2 -1
+  F
+}
+
+p0 = c(1,1) 
+sol = BBsolve(par=p0, fn=interseccion)
+#Muestra el vector solución del sistema para cada n valores iniciales
+sol$par
+
+
+
+trigexp = function(x) {
+  
+  #Se le asigna el tamaño del vector
+  n = length(x)
+  #Replica los elementos del vector en base a su tamaño
+  F = rep(NA, n)
+  #Se ubican las tres ecuaciones de la funcion
+  F[1] = 3*x[1]^2 + 2*x[2] - 5 + sin(x[1] - x[2]) * sin(x[1] + x[2])
+  #Se establece una secuencia para la segunda funcion que va de 2 a n-1
+  tn1 = 2:(n-1)
+  F[tn1] = -x[tn1-1] * exp(x[tn1-1] - x[tn1]) + x[tn1] *
+    ( 4 + 3*x[tn1]^2) + 2 * x[tn1 + 1] + sin(x[tn1] -
+                                               x[tn1 + 1]) * sin(x[tn1] + x[tn1 + 1]) - 8
+  F[n] = -x[n-1] * exp(x[n-1] - x[n]) + 4*x[n] - 3
+  #Se retorna F
+  F
+}
+
+n = 10000
+p0 = runif(n) # n initial random starting guesses
+sol = BBsolve(par=p0, fn=trigexp)
+sol$pa
+
+#Punto Ocho
+
+GaussTransitividad = function(A)
+{
+  #Se obtiene el vector de la diagonal
+  D = diag(A)
+  #Se obtiene la matriz que solo contiene a la diagonal
+  Didi = diag(D)
+  
+  
+  #Se separan en dos matrices(triangular inferior y superior respectivamente)
+  L = A
+  L[upper.tri(L)] <- 0
+  L[!lower.tri(L)] <- 0
+  
+  U = A
+  U[lower.tri(U)] <- 0
+  U[!upper.tri(U)] <- 0
+  
+  #Matriz de Transicion para Gauss-Seidel
+  T = ((-solve(Didi))%*%U)%*%solve(D2+(L%*%(solve(Didi))))
+  print (T)
+  
+}
+
+valorcito = 2
+while(valorcito <= 8)
+{
+  A = magic(valorcito)
+  GaussTransitividad(A)
+}
